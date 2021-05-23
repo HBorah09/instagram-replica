@@ -20,4 +20,4 @@ Deployment:
 Used heroku and netlify to deploy backend and frontend app respectively
 
 ## It can be viewed here: 
-https://learn-node-hiya.netlify.app/
+https://hiya-borah.netlify.app/
