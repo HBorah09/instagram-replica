@@ -1,21 +1,30 @@
 import React, {useState, useEffect} from 'react';
 import {Link, useHistory, useLocation} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
+import decode from 'jwt-decode';
 import {AppBar, Button, Toolbar, Typography, Avatar} from '@material-ui/core';
+import {loggedInUser} from '../../utils';
 import useStyles from './styles';
 import memories from '../../images/memories.png';
 
 
 const Navbar = () => {
   const classes = useStyles();
-  const [user, setUser]  = useState(JSON.parse(localStorage.getItem('profile')));
+  const [user, setUser]  = useState(loggedInUser());
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
 
   useEffect(() => {
     const token = user?.token;
-    setUser(JSON.parse(localStorage.getItem('profile')));
+    if (token) {
+      const decoded = decode(token);
+      if (decode.exp * 1000< new Date().getTime()) {
+        logout();
+      }
+    }
+    
+    setUser(loggedInUser());
   }, [location]);
 
   const logout = () => {
@@ -33,8 +42,8 @@ const Navbar = () => {
       <Toolbar className={classes.toolbar}>
           {user ? (
             <div className={classes.profile}>
-                <Avatar className={classes.purple} alt={user.result.name} src={user.result.imageUrl}>{user.result.name.charAt(0)}</Avatar>
-                <Typography className={classes.userName} variant="h6">{user.result.name}</Typography>
+                <Avatar className={classes.purple} alt={user?.result?.name} >{user?.result?.name.charAt(0)}</Avatar>
+                <Typography className={classes.userName} variant="h6">{user?.result?.name}</Typography>
                 <Button variant="contained" className={classes.logout} color="secondary" onClick={logout}>Logout</Button>
             </div>
           ): (
