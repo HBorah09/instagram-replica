@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {loggedInUser} from '../utils';
 
-const API = axios.create({baseURL: 'https://memories-app12.herokuapp.com'});
+const API = axios.create({baseURL: 'https://mern-app-hiya.herokuapp.com/'});
 
 API.interceptors.request.use(req => {
   const user = loggedInUser();
